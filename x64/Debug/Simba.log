@@ -1,0 +1,9 @@
+﻿  simba.cpp
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(14): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(15): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(16): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(17): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(18): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(19): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+c:\users\user\documents\programming\simba\simba\src\core\simba.h(20): warning C4305: 'initializing': truncation from 'double' to 'sba::Float'
+  Simba.vcxproj -> C:\Users\User\Documents\Programming\Simba\x64\Debug\Simba.exe
