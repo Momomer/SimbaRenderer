@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cmath>
 
 
 /*This file is equivalent to pbrt.h*/
@@ -8,17 +8,17 @@
 namespace sba{
 
 	#ifdef PBRT_FLOAT_AS_DOUBLE
-		typedef double Float;
+		using Float=double;
 	#else
-		typedef float Float;
+		using Float=float;
 	#endif // PBRT_FLOAT_AS_DOUBLE
-		static const Float Pi = 3.14159265358979323846;
-		static const Float InvPi = 0.31830988618379067154;
-		static const Float Inv2Pi = 0.15915494309189533577;
-		static const Float Inv4Pi = 0.07957747154594766788;
-		static const Float PiOver2 = 1.57079632679489661923;
-		static const Float PiOver4 = 0.78539816339744830961;
-		static const Float Sqrt2 = 1.41421356237309504880;
+		constexpr Float Pi = 3.14159265358979323846;
+		constexpr Float InvPi = 0.31830988618379067154;
+		constexpr Float Inv2Pi = 0.15915494309189533577;
+		constexpr Float Inv4Pi = 0.07957747154594766788;
+		constexpr Float PiOver2 = 1.57079632679489661923;
+		constexpr Float PiOver4 = 0.78539816339744830961;
+		constexpr Float Sqrt2 = 1.41421356237309504880;
 
 	#if defined(__clang__)
 		inline int Log2Int(uint32_t v) {
@@ -29,11 +29,10 @@ namespace sba{
 			return 31 - __builtin_clz(v);
 }
 	#elif defined(_MSC_VER)
-	template<class T>
-	inline typename std::enable_if<std::is_integral<T>::value, T>::type Log2Int(T x) {
+	inline int Log2Int(uint32_t  x) {
 		unsigned long index;
-		_BitScanReverse64(&index, x); //VCC Befehl
-		return static_cast<T>(index); //GCC hat __builtin_clz 
+		_BitScanReverse(&index, x); //VCC Befehl
+		return static_cast<int>(index); //GCC hat __builtin_clz 
 	}
 	#endif
 
@@ -56,8 +55,16 @@ namespace sba{
 			return result;
 		}
 	}
-	template <> inline Float Mod(Float a, Float b) {
+
+	//Calculating the floating point remainder. See the documentation for std::fmd for details
+	inline Float Mod(Float a, Float b) {
 		return std::fmod(a, b);
+	}
+
+	//Calculating the logarithm with respect to base 2.
+	inline Float Log2(Float x) {
+		const Float invLog2 = 1.442695040888963387004650940071;
+		return std::log(x) * invLog2;
 	}
 
 	//Converting degrees into radians
@@ -69,10 +76,7 @@ namespace sba{
 	inline Float Degrees(Float rad) {
 		return (180 / Pi) * rad;
 	}
-	inline Float Log2(Float x) {
-		const Float invLog2 = 1.442695040888963387004650940071;
-		return std::log(x) * invLog2;
-	}
+
 
 
 	
