@@ -1,6 +1,7 @@
 #include <assert.h> 
 #include<iostream>
 #include "../../core/simba.h"
+#include <cmath>
 
 namespace test {
 	
@@ -17,6 +18,18 @@ namespace test {
 		assert(sba::Mod(10, 3) == 1 && "The remainder of the mod function is not correct.");
 		assert(sba::Mod(-10, 3) == 2 && "The remainder of the mod function is not correct.");
 		std::cout << "test_mod successful!\n";
+		return true;
+	}
+	bool test_log2() {
+		assert(abs(sba::Log2(10)-3.32193)<0.0001 && "The result of the Log2 function is not correct.");
+		std::cout << "test_log2 successful!\n";
+		return true;
+	}
+	bool test_log2int() {
+		assert(sba::Log2Int(8)==3 && "The result of the Log2Int function is not correct.");
+		assert(sba::Log2Int(1) == 0 && "The result of the Log2Int function is not correct.");
+		assert(sba::Log2Int(9) == 3 && "The result of the Log2Int function is not correct.");
+		std::cout << "test_log2int successful!\n";
 		return true;
 	}
 }
