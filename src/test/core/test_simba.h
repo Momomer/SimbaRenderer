@@ -32,4 +32,11 @@ namespace test {
 		std::cout << "test_log2int successful!\n";
 		return true;
 	}
+	bool test_ispoweroftwo() {
+		assert(sba::isPowerOfTwo(8)==true && "The result of the Log2Int function is not correct.");
+		assert(sba::isPowerOfTwo(7)==false && "The result of the Log2Int function is not correct.");
+		assert(sba::isPowerOfTwo(0)==false && "The result of the Log2Int function is not correct.");	
+		std::cout << "test_ispoweroftwo successful!\n";
+		return true;
+	}
 }

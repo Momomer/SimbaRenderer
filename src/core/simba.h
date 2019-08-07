@@ -77,6 +77,10 @@ namespace sba{
 		return (180 / Pi) * rad;
 	}
 
+	template<typename T> inline bool isPowerOfTwo(T v){
+		return v&&!(v&(v-1));
+	}
+
 
 
 	
