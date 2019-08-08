@@ -76,9 +76,15 @@ namespace sba{
 	inline Float Degrees(Float rad) {
 		return (180 / Pi) * rad;
 	}
-
-
-
-	
+	template <typename T> inline bool IsPowerOf2(T v) {
+		return v && !(v & (v - 1));
+	}
+	inline int32_t RoundUpPow2(int32_t v) {
+		v--;
+		v |= v >> 1;    v |= v >> 2;
+		v |= v >> 4;    v |= v >> 8;
+		v |= v >> 16;
+		return v + 1;
+	}	
 	
 }
