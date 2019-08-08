@@ -72,6 +72,7 @@ namespace sba{
 		return (Pi / 180) * deg;
 	}
 
+
 	//Converting radians into degrees
 	inline Float Degrees(Float rad) {
 		return (180 / Pi) * rad;
