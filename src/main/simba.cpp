@@ -8,7 +8,7 @@ int main() {
 	std::cout << sba::Log2(10) << "\n";
 	std::cout << std::log(10)/std::log(2)<<"\n";
 	std::cout << sba::Log2Int(8) << "\n";
-	std::cout << sba::IsPowerOf2(1) << "\n";
+	std::cout << sba::IsPowerOfTwo(1) << "\n";
 	std::cout << sba::RoundUpPow2(192) << "\n";
 	std::cin.get();
 }

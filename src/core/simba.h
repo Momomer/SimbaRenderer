@@ -77,7 +77,7 @@ namespace sba{
 	inline Float Degrees(Float rad) {
 		return (180 / Pi) * rad;
 	}
-	template <typename T> inline bool IsPowerOf2(T v) {
+	template <typename T> inline bool IsPowerOfTwo(T v) {
 		return v && !(v & (v - 1));
 	}
 	inline int32_t RoundUpPow2(int32_t v) {
@@ -87,5 +87,21 @@ namespace sba{
 		v |= v >> 16;
 		return v + 1;
 	}	
+	template <typename Predicate> int FindInterval(int size, const Predicate &pred) {
+		int first = 0, len = size;
+		while (len > 0) {
+			int half = len >> 1, middle = first + half;
+				if (pred(middle)) {
+					first = middle + 1;
+					len -= half + 1;
+				}
+				else
+					len = half;
+		}
+		return Clamp(first - 1, 0, size - 2);
+	}
+
+	
+		
 	
 }
