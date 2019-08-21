@@ -197,7 +197,7 @@ namespace sba {
 			x -= v.x; y -= v.y; z -= v.z;
 			return *this;
 		}
-		template <typename T>
+		
 		inline Float Distance(const Point3<T> &rhs) {
 			return (*this - rhs).Length();
 		} 
