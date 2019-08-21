@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\geometry.cpp" />
     <ClCompile Include="src\main\simba.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\geometry.h" />
     <ClInclude Include="src\core\simba.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -90,6 +92,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

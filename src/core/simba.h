@@ -1,9 +1,12 @@
-#pragma once
+//#pragma once
 #include <cmath>
+#include <cstdint>
 
 
 /*This file is equivalent to pbrt.h*/
 
+#ifndef SIMBA_PBRT_H
+#define SIMBA_PBRT_H
 
 namespace sba{
 
@@ -29,6 +32,7 @@ namespace sba{
 			return 31 - __builtin_clz(v);
 }
 	#elif defined(_MSC_VER)
+#include<intrin.h>
 	inline int Log2Int(uint32_t  x) {
 		unsigned long index;
 		_BitScanReverse(&index, x); //VCC Befehl
@@ -102,6 +106,7 @@ namespace sba{
 	}
 
 	
-		
-	
 }
+
+
+#endif
