@@ -351,11 +351,12 @@ namespace sba {
  
 			
 			Normal3<T> Faceforward(const Vector3<T> &v) {
-				return (n.Dot(v) < 0.f) ? -n : n;
+				return ((*this).Dot(v) < 0.f) ? -(*this) : (*this);
 			}
 		};
 
 		using Normal3f = Normal3<Float>;
+		Float  Infinity=std::numeric_limits<Float>::infinity();
 
 		template<class T>
 		class Ray {
