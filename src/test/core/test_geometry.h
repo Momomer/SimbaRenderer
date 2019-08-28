@@ -5,6 +5,7 @@
 #include <cmath>
 #include<limits>
 #include<cstdint>
+#include <typeinfo>
 
 namespace test {
 
@@ -17,7 +18,7 @@ namespace test {
 		return true;
 	}
 	bool test_vector2_has_nans() {
-		sba::Vector2f v1(1, 2);
+		sba::Vector2f v1(1.0, 2.0);
 		assert(v1.HasNaNs() == false && "The hasNans function is false, even though the vector entries are numbers.");
 		//sba::Vector3f v2(std::numeric_limits<sba::Float>::quiet_NaN(), std::numeric_limits<sba::Float>::quiet_NaN(), 1.0);
 		//assert(v2.HasNaNs() == true && "The hasNans function did not find the NaNs.");
@@ -222,6 +223,109 @@ namespace test {
 		assert(abs(result.y - 0.0) < 0.01 && "The element returned is incorrect.");
 		assert(abs(result.z - 2.2) < 0.01 && "The element returned is incorrect.");
 		std::cout << "test_point3_abs successful!\n";
+		return true;
+	}
+	bool test_point2_add() {
+		sba::Point2<int> p1(3, 5);
+		sba::Vector2<int> v2(1, 2);
+		sba::Point2<int> result = p1 + v2;
+		assert(result.x == 4 && "The x value of the result is false.");
+		assert(result.y == 7 && "The y value of the result is false.");
+		std::cout << "test_point2_add successful!\n";
+
+		return true;
+	}
+	bool test_point2_sub() {
+		sba::Point2<int> p1(3, 5);
+		sba::Point2<int> p2(1, 2);
+		sba::Vector2<int> result = p1 - p2;
+		assert(result.x == 2 && "The x value of the result is false.");
+		assert(result.y == 3 && "The y value of the result is false.");
+		std::cout << "test_Point2_sub successful!\n";
+
+		return true;
+	}
+
+	bool test_point2_from_point3() {
+		sba::Point3<int> p2(1, 2, 3);
+		sba::Point2<int> result(p2);
+		//sba::Point2<int> result(1, 2);
+		assert(result.x == 1 && "The x value of the result is false.");
+		assert(result.y == 2 && "The y value of the result is false.");
+		std::cout << "test_point2_from_point3 successful!\n";
+
+		return true;
+	}
+
+	bool test_vector3_from_point3() {
+		sba::Point3<int> p1(1, 2, 3);
+		auto result = (sba::Vector3<double>) p1;
+		//sba::Point2<int> result(1, 2);
+		std::cout << "The type is:" << typeid(result).name();
+		//std::cout<<decltype(result) == decltype(p1);
+		//assert();
+		std::cout << "test_vector3_from_point3 successful!\n";
+		return true;
+	}
+
+	bool test_point3_lerp() {
+		sba::Point3f p1(1, 2, 3);
+		sba::Point3f p2(5, 6, 7);
+		sba::Point3f result1=p1.Lerp(0,p2);
+		sba::Point3f result2 = p1.Lerp(1, p2);
+		sba::Point3f result3 = p1.Lerp(0.5, p2);
+		assert(result1.x == p1.x && "The x value of the result should match p1's x value.");
+		assert(result1.y == p1.y && "The y value of the result should match p1's y value.");
+		assert(result1.z == p1.z && "The y value of the result should match p1's z value.");
+		assert(result2.x == p2.x && "The x value of the result should match p2's x value.");
+		assert(result2.y == p2.y && "The y value of the result should match p2's y value.");
+		assert(result2.z == p2.z && "The y value of the result should match p2's z value.");
+
+
+		for (size_t i = 0; i < 10; i++) {
+			double t = i;
+			sba::Point3f result = p1.Lerp(t, p2);
+		
+			assert(abs(result.x -( (p1.x)*(1 - t) + p2.x * t)) < 0.1&& "The x value of the result is false.");
+			assert(abs(result.y - ((p1.y)*(1 - t) + p2.y * t)) < 0.1 && "The y value of the result is false.");
+			assert(abs(result.z -( (p1.z)*(1 - t) + p2.z * t)) < 0.1 && "The z value of the result is false.");
+		}
+
+
+		std::cout << "test_point3_lerp successful!\n";
+
+		return true;
+	}
+	bool test_vector2_add() {
+		sba::Vector2<int> v1(1, 2);
+		sba::Vector2<int> v2(1, 2);
+
+		sba::Vector2<int> result = v1 + v2;
+		assert(result.x == 2 && "The x value of the result is false.");
+		assert(result.y == 4 && "The y value of the result is false.");
+
+		std::cout << "test_vector2_add successful!\n";
+		return true;
+	}
+	bool test_vector2_scalar_mult() {
+		sba::Vector2<int> v1(1, 2);
+
+		sba::Vector2<int> result = v1 * 5;
+		assert(result.x == 5 && "The x value of the result is false.");
+		assert(result.y == 10 && "The y value of the result is false.");
+
+		std::cout << "test_vector2_scalar_mult successful!\n";
+		return true;
+	}
+	
+	bool test_normal3_from_vector3() {
+		sba::Vector3<float> p1(1, 2, 3);
+		auto result = (sba::Normal3<float>) p1;
+		//sba::Point2<int> result(1, 2);
+		std::cout << "The type is:" << typeid(result).name();
+		//std::cout<<decltype(result) == decltype(p1);
+		//assert();
+		std::cout << "test_normal3_from_vector3 successful!\n";
 		return true;
 	}
 }

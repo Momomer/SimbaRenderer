@@ -1,23 +1,27 @@
-//#pragma once
+#pragma once
 #include <assert.h> 
 #include<algorithm>
+#include<memory>
 #include "simba.h"
+#include "medium.h"
 
 namespace sba {
 	template<class T>
 	class Vector2 {
 	public:
-		T x=0;
-		T y=0;
+		T x = 0;
+		T y = 0;
 
 
-		Vector2(T x, T y)
+		Vector2<T>() {}
+
+		Vector2<T>(T x, T y)
 			: x(x), y(y) {
-			assert(!HasNaNs() && "There are NaNs in the vector constructor");
+			//assert(!HasNaNs() && "There are NaNs in the vector constructor");
 		}
 
 		bool HasNaNs() const {
-			return std::isnan(x) || std::isnan(y) ;
+			return std::isnan(x) || std::isnan(y);
 		}
 
 		T operator[](int i) const
@@ -33,18 +37,46 @@ namespace sba {
 			if (i == 0) return x;
 			return y;
 		};
+		Vector2<T> operator+(const Vector2<T> rhs) const {
+			Vector2<T> result;
+
+			result.x = this->x + rhs.x;
+			result.y = this->y + rhs.y;
+			return result;
+		}
+		Vector2<T> operator*(T rhs) const {
+			Vector2<T> result;
+
+			result.x = this->x * rhs;
+			result.y = this->y * rhs;
+			return result;
+		}
+
+		Vector2<T> &operator/=(T f) {
+			//Assert(f != 0);
+			Float inv = static_cast<Float>(1) / f;
+			x *= inv;
+			y *= inv;
+			return *this;
+		}
+		Vector2<T> operator-(const Vector2<T> rhs) const {
+			Vector2<T> result;
+
+			result.x = this->x - rhs.x;
+			result.y = this->y - rhs.y;
+			return result;
+		}
 
 	};
 
-	
 
 	template<class T>
 	class Vector3 {
 	public:
-		T x=0;
-		T y=0;
-		T z=0;
-		
+		T x = 0;
+		T y = 0;
+		T z = 0;
+
 		Vector3() {}
 
 		Vector3(T x, T y, T z)
@@ -63,7 +95,7 @@ namespace sba {
 			return sqrt(x*x + y * y + z * z);
 		}
 		Float LengthSquared() {
-			return x*x + y * y + z * z;
+			return x * x + y * y + z * z;
 		}
 		Vector3<T> Abs() {
 			return Vector3<T>(std::abs(x), std::abs(y), std::abs(z));
@@ -88,7 +120,7 @@ namespace sba {
 			Float inv = static_cast<Float>(1) / f;
 			return Vector3<T>(
 				x * inv,
-				y * inv, 
+				y * inv,
 				z * inv);
 		}
 
@@ -129,8 +161,8 @@ namespace sba {
 		Vector3<T> &operator/=(T f) {
 			//Assert(f != 0);
 			Float inv = static_cast<Float>(1) / f;
-			x *= inv; 
-			y *= inv; 
+			x *= inv;
+			y *= inv;
 			z *= inv;
 			return *this;
 		}
@@ -139,7 +171,7 @@ namespace sba {
 
 			result.x = this->x - rhs.x;
 			result.y = this->y - rhs.y;
-			result.z = this->z -rhs.z;
+			result.z = this->z - rhs.z;
 			return result;
 		}
 
@@ -150,85 +182,198 @@ namespace sba {
 	using Vector3i = Vector3<int>;
 
 	template <typename T> inline Vector3<T>
-	operator*(T s, const Vector3<T> &v) { return v * s; }
+		operator*(T s, const Vector3<T> &v) { return v * s; }
 
-	template<class T>
-	class Point2 {
-		T x=0;
-		T y=0;
-	};
+		//might have to change it to extern
+		template<class T>
+		class Point3;
 
-	template<class T>
-	class Point3 {
-	public:
-		T x=0;
-		T y=0;
-		T z=0;
-
-	
-		Point3() {
-
-		}
-
-		//Explicit constructor
-		Point3(T x, T y, T z): x(x),y(y),z(z) {
-
-		}
-		
-		Point3<T> operator+(const Vector3<T> &v) const {
-			return Point3<T>(
-				x + v.x, 
-				y + v.y, 
-				z + v.z);
-		}
-		Point3<T> &operator+=(const Vector3<T> &v) {
-			x += v.x;
-			y += v.y;
-			z += v.z;
-			return *this;
-		}
-		Vector3<T> operator-(const Point3<T> &p) const {
-			return Vector3<T>(x - p.x, y - p.y, z - p.z);
-		}
-		Point3<T> operator-(const Vector3<T> &v) const {
-			return Point3<T>(x - v.x, y - v.y, z - v.z);
-		}
-		Point3<T> &operator-=(const Vector3<T> &v) {
-			x -= v.x; y -= v.y; z -= v.z;
-			return *this;
-		}
-		
-		inline Float Distance(const Point3<T> &rhs) {
-			return (*this - rhs).Length();
-		} 
-		inline Float DistanceSquared(const Point3<T> &rhs) {
-			return (*this - rhs).LengthSquared();
-		}
-		Point3<T> Min(const Point3<T> &p2) {
-			return Point3<T>(std::min(x, p2.x), std::min(y, p2.y),
-				std::min(z, p2.z));
-		}
-		Point3<T> Max(const Point3<T> &p2) {
-			return Point3<T>(std::max(x, p2.x), std::max(y, p2.y),
-				std::max(z, p2.z));
-		}
-		Point3<T> Floor() {
-			return Point3<T>(std::floor(x), std::floor(y), std::floor(z));
-		}
-		Point3<T> Ceil() {
-			return Point3<T>(std::ceil(x), std::ceil(y), std::ceil(z));
-		}
-		Point3<T> Abs() {
-			return Point3<T>(std::abs(x), std::abs(y), std::abs(z));
-		}
+		template<class T>
+		class Point2 {
+		public:
+			T x = 0;
+			T y = 0;
 
 
-	};
 
-	using Point2f = Point2<Float>;
-	using Point2i = Point2<int>;
-	using Point3f = Point3<Float>;
-	using Point3i = Point3<int>;
+			Point2() { x = y = 0; }
+			Point2(T x, T y) : x(x), y(y) {
+				//Assert(!HasNaNs());
+			}
 
+			explicit Point2<T>(const Point3<T>& p) : x(p.x), y(p.y) {
+
+			}
+
+			bool HasNaNs() const {
+				return std::isnan(x) || std::isnan(y);
+			}
+
+			Point2<T> operator+(const Vector2<T> &v) const {
+				return Point2<T>(
+					x + v.x,
+					y + v.y);
+			}
+			Point2<T> &operator+=(const Vector2<T> &v) {
+				x += v.x;
+				y += v.y;
+				return *this;
+			}
+			Vector2<T> operator-(const Point2<T> &v) const {
+				return Vector2<T>(x - v.x, y - v.y);
+			}
+
+
+		};
+
+		template<class T>
+		class Point3 {
+		public:
+			T x = 0;
+			T y = 0;
+			T z = 0;
+
+
+
+
+			//Explicit constructor
+
+			Point3() { x = y = z = 0; }
+			Point3(T x, T y, T z) : x(x), y(y), z(z) {
+				//Assert(!HasNaNs());
+			}
+
+			bool HasNaNs() const {
+				return std::isnan(x) || std::isnan(y) || std::isnan(z);
+			}
+
+			Point3<T> operator+(const Vector3<T> &v) const {
+				return Point3<T>(
+					x + v.x,
+					y + v.y,
+					z + v.z);
+			}
+			Point3<T> operator+(const Point3<T> &v) const {
+				return Point3<T>(
+					x + v.x,
+					y + v.y,
+					z + v.z);
+			}
+			Point3<T> &operator+=(const Vector3<T> &v) {
+				x += v.x;
+				y += v.y;
+				z += v.z;
+				return *this;
+			}
+			Vector3<T> operator-(const Point3<T> &p) const {
+				return Vector3<T>(x - p.x, y - p.y, z - p.z);
+			}
+			Point3<T> operator-(const Vector3<T> &v) const {
+				return Point3<T>(x - v.x, y - v.y, z - v.z);
+			}
+			Point3<T> &operator-=(const Vector3<T> &v) {
+				x -= v.x; y -= v.y; z -= v.z;
+				return *this;
+			}
+
+			Point3<T> operator*(T rhs) const {
+				Point3<T> result;
+
+				result.x = this->x * rhs;
+				result.y = this->y * rhs;
+				result.z = this->z * rhs;
+				return result;
+			}
+			inline Float Distance(const Point3<T> &rhs) {
+				return (*this - rhs).Length();
+			}
+			inline Float DistanceSquared(const Point3<T> &rhs) {
+				return (*this - rhs).LengthSquared();
+			}
+			//Returns elementwise minimum of two points
+			Point3<T> Min(const Point3<T> &p2) {
+				return Point3<T>(std::min(x, p2.x), std::min(y, p2.y),
+					std::min(z, p2.z));
+			}
+
+			//Returns elementwise maximum of two points
+			Point3<T> Max(const Point3<T> &p2) {
+				return Point3<T>(std::max(x, p2.x), std::max(y, p2.y),
+					std::max(z, p2.z));
+			}
+			//Floors all elements of a Point. Useful if elements are floating point number
+			Point3<T> Floor() {
+				return Point3<T>(std::floor(x), std::floor(y), std::floor(z));
+			}
+
+			//Ceils all elements of a Point. Useful if elements are floating point number
+			Point3<T> Ceil() {
+				return Point3<T>(std::ceil(x), std::ceil(y), std::ceil(z));
+			}
+			//Makes all elements positive. 
+			Point3<T> Abs() {
+				return Point3<T>(std::abs(x), std::abs(y), std::abs(z));
+			}
+
+			//Line equation between points p0 and p1
+			Point3<T> Lerp(Float t, const Point3<T> &p1) {
+				return  (*this)*(1 - t) + p1 * t;
+			}
+
+			//Casting operator so you can cast a Point3 to a Vector3 like auto v=(Vector3f)p1;
+			template <typename U> explicit operator Vector3<U>() const {
+				return Vector3<U>(x, y, z);
+			}
+
+
+		};
+
+		using Point2f = Point2<Float>;
+		using Point2i = Point2<int>;
+		using Point3f = Point3<Float>;
+		using Point3i = Point3<int>;
+
+		template<class T>
+		class Normal3 {
+		public:
+			T x = 0;
+			T y = 0;
+			T z = 0;
+
+
+			Normal3() {  }
+			Normal3(T x, T y, T z) : x(x), y(y), z(z) {
+
+			}
+			explicit Normal3<T>(const Vector3<T> &v) : x(v.x), y(v.y), z(v.z) {
+				//Assert(!v.HasNaNs());
+			}
+ 
+			
+			Normal3<T> Faceforward(const Vector3<T> &v) {
+				return (n.Dot(v) < 0.f) ? -n : n;
+			}
+		};
+
+		using Normal3f = Normal3<Float>;
+
+		template<class T>
+		class Ray {
+		public:
+			Point3f o;
+			Vector3f d;
+			mutable Float tMax;
+			Float time;
+			const   std::shared_ptr<Medium> medium;
+
+			Ray() : tMax(Infinity), time(0.f), medium(nullptr) { }
+			Ray(const Point3f &o, const Vector3f &d, Float tMax = Infinity,
+				Float time = 0.f, const Medium *medium = nullptr)
+				: o(o), d(d), tMax(tMax), time(time), medium(medium) { }
+
+			Point3f operator()(Float t) const { return o + d * t; }
+
+
+		};
 }
 

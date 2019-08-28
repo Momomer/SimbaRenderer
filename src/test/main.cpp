@@ -36,9 +36,18 @@ bool run_geometry_tests() {
 	bool test20 = test::test_point3_floor();
 	bool test21 = test::test_point3_abs();
 	bool test22 = test::test_point3_ceil();
+	bool test23 = test::test_point2_from_point3();
+	bool test24 = test::test_vector3_from_point3();
+	bool test25 = test::test_point3_lerp();
+	bool test26 = test::test_vector2_add();
+	bool test27 = test::test_vector2_scalar_mult();
+	bool test28 = test::test_normal3_from_vector3();
+	bool test29 = test::test_point2_add();
+	bool test30 = test::test_point2_sub();
 
 	return test1 && test2&&test3&&test4&&test5&&test6&&test7&&test8&&test9&&test10&&test11&&test12
-		&&test13&&test14&&test15&&test16&&test17&&test18&&test19&&test20&&test21&&test22;
+		&&test13&&test14&&test15&&test16&&test17&&test18&&test19&&test20&&test21&&test22&&test23
+		&&test24&&test25&&test26&&test27&&test28&&test29&&test30;
 }
 
 int main() {
