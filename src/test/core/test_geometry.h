@@ -261,8 +261,10 @@ namespace test {
 		sba::Point3<int> p1(1, 2, 3);
 		auto result = (sba::Vector3<double>) p1;
 		//sba::Point2<int> result(1, 2);
-		std::cout << "The type is:" << typeid(result).name();
+		//std::cout << "The type is:" << typeid(result).name();
 		//std::cout<<decltype(result) == decltype(p1);
+		bool res=std::is_same<decltype(result),sba::Vector3<double>>::value;
+		assert(res&&"The cast from Point3 to Vector3 did not work");
 		//assert();
 		std::cout << "test_vector3_from_point3 successful!\n";
 		return true;
@@ -322,8 +324,10 @@ namespace test {
 		sba::Vector3<float> p1(1, 2, 3);
 		auto result = (sba::Normal3<float>) p1;
 		//sba::Point2<int> result(1, 2);
-		std::cout << "The type is:" << typeid(result).name();
+		//std::cout << "The type is:" << typeid(result).name();
 		//std::cout<<decltype(result) == decltype(p1);
+		bool res=std::is_same<decltype(result),sba::Normal3<float>>::value;
+		assert(res && "The cast from Vector3 to Normal3 did not work");
 		//assert();
 		std::cout << "test_normal3_from_vector3 successful!\n";
 		return true;
