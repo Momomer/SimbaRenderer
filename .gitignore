@@ -1,2 +1,2 @@
-*.vcxproj
+*.vcxproj*
 x64/
