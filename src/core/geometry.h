@@ -6,6 +6,8 @@
 #include "medium.h"
 
 namespace sba {
+	
+	/*Two dimensional vector with generic elements.*/
 	template<class T>
 	class Vector2 {
 	public:
@@ -23,7 +25,7 @@ namespace sba {
 		bool HasNaNs() const {
 			return std::isnan(x) || std::isnan(y);
 		}
-
+		
 		T operator[](int i) const
 		{
 			assert(i >= 0 && i <= 1 && "Index out of bounds");
@@ -69,7 +71,7 @@ namespace sba {
 
 	};
 
-
+	/*Three dimensional vector with generic arguments.*/
 	template<class T>
 	class Vector3 {
 	public:
@@ -88,18 +90,28 @@ namespace sba {
 			return std::isnan(x) || std::isnan(y) || std::isnan(z);
 		}
 
+		/*Returns the dot product between two vectors.*/
 		T Dot(Vector3<T> rhs) {
 			return this->x * rhs.x + this->y * rhs.y + this->z * rhs.z;
 		}
+
+		/*Returns the Euclidian norm of a vector.*/
 		Float Length() {
 			return sqrt(x*x + y * y + z * z);
 		}
+
+		/*Returns the squared Euclidian norm of a vector. This is in many situations
+		preferred to the true length, as the square root does not have to be calculated.*/
 		Float LengthSquared() {
 			return x * x + y * y + z * z;
 		}
+
+		/*Returns a new vector, that has the absolute value of all elements of the old vector as elements.*/
 		Vector3<T> Abs() {
 			return Vector3<T>(std::abs(x), std::abs(y), std::abs(z));
 		}
+
+		/*Calculates the cross vector between two vectors.*/
 		Vector3<T> Cross(const Vector3<T> &v2) {
 			return Vector3<T>(
 				(y * v2.z) - (z * v2.y),
@@ -107,10 +119,11 @@ namespace sba {
 				(x * v2.y) - (y * v2.x));
 		}
 
+		/*Extracts the minimum element of the vector.*/
 		T MinComponent() {
 			return std::min(x, std::min(y, z));
 		}
-
+		/*Extracts the maximum element of the vector.*/
 		T MaxComponent() {
 			return std::max(x, std::max(y, z));
 		}
@@ -180,11 +193,11 @@ namespace sba {
 	using Vector2i = Vector2<int>;
 	using Vector3f = Vector3<Float>;
 	using Vector3i = Vector3<int>;
+	
+	template <typename T> 
+	inline Vector3<T> operator*(T s, const Vector3<T> &v) { return v * s; }
 
-	template <typename T> inline Vector3<T>
-		operator*(T s, const Vector3<T> &v) { return v * s; }
-
-		//might have to change it to extern
+		//Forward declaration of Point3. Might have to change it to extern?
 		template<class T>
 		class Point3;
 
@@ -358,6 +371,7 @@ namespace sba {
 		using Normal3f = Normal3<Float>;
 		Float  Infinity=std::numeric_limits<Float>::infinity();
 
+		/*The ray class represents a line segment limited by t in [0,tMax].*/
 		template<class T>
 		class Ray {
 		public:
@@ -365,7 +379,7 @@ namespace sba {
 			Vector3f d;
 			mutable Float tMax;
 			Float time;
-			const   std::shared_ptr<Medium> medium;
+			const std::shared_ptr<Medium> medium;
 
 			Ray() : tMax(Infinity), time(0.f), medium(nullptr) { }
 			Ray(const Point3f &o, const Vector3f &d, Float tMax = Infinity,
